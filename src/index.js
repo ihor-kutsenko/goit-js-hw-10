@@ -5,7 +5,7 @@ import { fetchBreeds, fetchCatByBreed } from './cat-api';
 const breedSelectRef = document.querySelector('.breed-select');
 const catInfoRef = document.querySelector('.cat-info');
 const loaderRef = document.querySelector('.loader');
-const errorRef = document.querySelector('.error');
+
 
 loaderRef.classList.add('hidden');
 catInfoRef.classList.add('hidden');
@@ -21,7 +21,7 @@ function showBreeds() {
 
       if (breeds.length > 0) {
         selectedBreedId = breeds[0].id;
-        // showCatByBreed(selectedBreedId); // Перемістив цей виклик після першого відображення порід у селекті
+        
       }
     })
     .catch(error => {
@@ -34,7 +34,7 @@ function renderBreedsSelect() {
   breedSelectRef.innerHTML = breeds
     .map(breed => `<option value="${breed.id}">${breed.name}</option>`)
     .join('');
-  showCatByBreed(selectedBreedId); // Додано виклик showCatByBreed() після відображення порід у селекті
+  showCatByBreed(selectedBreedId); 
 }
 
 function showCatByBreed(breedId) {
