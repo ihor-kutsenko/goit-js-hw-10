@@ -7,26 +7,26 @@ const catInfoRef = document.querySelector('.cat-info');
 const loaderRef = document.querySelector('.loader');
 const errorRef = document.querySelector('.error');
 
+loaderRef.classList.add('hidden');
+catInfoRef.classList.add('hidden');
 let breeds = [];
 let selectedBreedId = null;
 
 function showBreeds() {
-  loaderRef.style.display = 'block';
-
+  hideCatInfo();
   fetchBreeds()
     .then(data => {
       breeds = data;
       renderBreedsSelect();
-      loaderRef.style.display = 'none';
 
       if (breeds.length > 0) {
         selectedBreedId = breeds[0].id;
-        showCatByBreed(selectedBreedId);
+        // showCatByBreed(selectedBreedId); // Перемістив цей виклик після першого відображення порід у селекті
       }
     })
     .catch(error => {
-      loaderRef.style.display = 'none';
-      showError();
+      loaderRef.classList.add('hidden');
+      errorNotiflix();
     });
 }
 
@@ -34,23 +34,23 @@ function renderBreedsSelect() {
   breedSelectRef.innerHTML = breeds
     .map(breed => `<option value="${breed.id}">${breed.name}</option>`)
     .join('');
+  showCatByBreed(selectedBreedId); // Додано виклик showCatByBreed() після відображення порід у селекті
 }
 
 function showCatByBreed(breedId) {
-  loaderRef.style.display = 'block';
-  catInfoRef.style.display = 'none';
+  hideCatInfo();
 
   fetchCatByBreed(breedId)
     .then(data => {
       if (data) {
         renderCatInfo(data);
-        catInfoRef.style.display = 'block';
+        catInfoRef.classList.remove('hidden');
       }
-      loaderRef.style.display = 'none';
+      loaderRef.classList.add('hidden');
     })
     .catch(error => {
-      loaderRef.style.display = 'none';
-      showError();
+      loaderRef.classList.add('hidden');
+      errorNotiflix();
     });
 }
 
@@ -66,17 +66,27 @@ function renderCatInfo(cat) {
    </div>`;
 }
 
-function showError() {
-  errorRef.style.display = 'block';
-}
-
-function hideError() {
-  errorRef.style.display = 'none';
-}
-
 breedSelectRef.addEventListener('change', event => {
   selectedBreedId = event.target.value;
   showCatByBreed(selectedBreedId);
 });
 
 showBreeds();
+hideCatInfo();
+
+function hideCatInfo() {
+  if (!catInfoRef.classList.contains('hidden')) {
+    catInfoRef.classList.add('hidden');
+  }
+  loaderRef.classList.remove('hidden');
+}
+
+function errorNotiflix() {
+  Notiflix.Notify.failure(
+    `Oops! Something went wrong! Try reloading the page!`,
+    {
+      clickToClose: true,
+      timeout: 4000,
+    }
+  );
+}
