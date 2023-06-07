@@ -37,6 +37,7 @@ export function fetchCatByBreed(breedId) {
           life_span: breed.life_span,
           image: cat.url
         };
-      }
-    });
+      } 
+    })
+    
 }

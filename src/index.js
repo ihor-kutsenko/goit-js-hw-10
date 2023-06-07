@@ -5,6 +5,8 @@ import { fetchBreeds, fetchCatByBreed } from './cat-api';
 const breedSelectRef = document.querySelector('.breed-select');
 const catInfoRef = document.querySelector('.cat-info');
 const loaderRef = document.querySelector('.loader');
+const errorRef = document.querySelector('.error');
+
 
 
 loaderRef.classList.add('hidden');
@@ -16,13 +18,13 @@ function showBreeds() {
   hideCatInfo();
   fetchBreeds()
     .then(data => {
-      breeds = data;
+        breeds = data;
       renderBreedsSelect();
 
       if (breeds.length > 0) {
         selectedBreedId = breeds[0].id;
         
-      }
+      } 
     })
     .catch(error => {
       loaderRef.classList.add('hidden');
@@ -35,6 +37,7 @@ function renderBreedsSelect() {
     .map(breed => `<option value="${breed.id}">${breed.name}</option>`)
     .join('');
   showCatByBreed(selectedBreedId); 
+  
 }
 
 function showCatByBreed(breedId) {
@@ -45,7 +48,7 @@ function showCatByBreed(breedId) {
       if (data) {
         renderCatInfo(data);
         catInfoRef.classList.remove('hidden');
-      }
+      } 
       loaderRef.classList.add('hidden');
     })
     .catch(error => {
