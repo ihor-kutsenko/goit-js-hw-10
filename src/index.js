@@ -11,6 +11,7 @@ const errorRef = document.querySelector('.error');
 
 loaderRef.classList.add('hidden');
 catInfoRef.classList.add('hidden');
+errorRef.classList.add('hidden'); 
 let breeds = [];
 let selectedBreedId = null;
 
@@ -24,7 +25,10 @@ function showBreeds() {
       if (breeds.length > 0) {
         selectedBreedId = breeds[0].id;
         
-      } 
+      } else {
+        
+        showError('No breeds found.');
+      }
     })
     .catch(error => {
       loaderRef.classList.add('hidden');
@@ -48,7 +52,10 @@ function showCatByBreed(breedId) {
       if (data) {
         renderCatInfo(data);
         catInfoRef.classList.remove('hidden');
-      } 
+      } else {
+        
+        errorRef.classList.remove('hidden');
+      }
       loaderRef.classList.add('hidden');
     })
     .catch(error => {
@@ -82,6 +89,12 @@ function hideCatInfo() {
     catInfoRef.classList.add('hidden');
   }
   loaderRef.classList.remove('hidden');
+  errorRef.classList.add('hidden'); 
+}
+
+function showError(message) {
+  errorRef.textContent = message;
+  errorRef.classList.remove('hidden');
 }
 
 function errorNotiflix() {
